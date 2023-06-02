@@ -1,5 +1,8 @@
 from .datamodel import (
     DataModel,
     DataModelQuerySet,
-    DataModelManager
+    DataModelManager,
+    UserDataModel,
+    UserDataModelManager,
+    UserDataModelQuerySet
 ) # noqa

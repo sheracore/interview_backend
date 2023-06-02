@@ -46,3 +46,26 @@ class DataModel(models.Model):
     @property
     def record_is_adding(self):
         return self._state.adding
+
+
+"""
+User Data Model
+"""
+
+
+class UserDataModelQuerySet(DataModelQuerySet):
+    pass
+
+
+class UserDataModelManager(DataModelManager):
+    def get_queryset(self):
+        return UserDataModelQuerySet(self.model, using=self._db)
+
+
+class UserDataModel(DataModel):
+    """Abstract for user model"""
+
+    user = models.ForeignKey('users.User', null=False, blank=False, on_delete=models.CASCADE, verbose_name=_('User'))
+
+    class Meta:
+        abstract = True

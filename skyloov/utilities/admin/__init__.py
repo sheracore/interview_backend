@@ -1,1 +1,1 @@
-from .basemodels import DataModelAdmin
+from .basemodels import DataModelAdmin, UserDataModelAdmin
