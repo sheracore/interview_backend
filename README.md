@@ -1,4 +1,4 @@
-# interview_django_backend
+# This project prepared for SKYLOOV Co
 
 # Installation
 ## Database
