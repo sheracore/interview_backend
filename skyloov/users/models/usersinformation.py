@@ -58,7 +58,7 @@ class UserInformation(UserDataModel):
         validators=[
             RegexValidator(regex=r'^\w*-*\w*$', message=_('Username must be Alphanumeric'), code='invalid_username'),
         ],
-        verbose_name=_('Username for mention'),
+        verbose_name=_('Username'),
     )
     gender = models.IntegerField(
         null=True,

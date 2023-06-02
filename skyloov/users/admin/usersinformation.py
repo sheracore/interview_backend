@@ -11,6 +11,7 @@ class UserInformationAdmin(UserDataModelAdmin):
         'last_name',
         'fullname',
         'last_login',
+        'username',
         'gender',
         'is_debug_mode',
         'is_staff',
