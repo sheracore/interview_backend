@@ -1,4 +1,4 @@
-# This project prepared for SKYLOOV Co
+# This project prepared for SKYLOOV Interview
 
 # Installation
 ## Database
