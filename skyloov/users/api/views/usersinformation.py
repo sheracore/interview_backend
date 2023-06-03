@@ -4,9 +4,10 @@ from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 
-from skyloov.users.models import User, UserInformation
+from skyloov.users.models import UserInformation
 from skyloov.utilities.permissions import AllowStaff, IsSuperUserAccessPermission
 from skyloov.utilities.api.views import UserDataModelViewSet
+from skyloov.utilities.api.paginations import StandardResultsSetPagination
 
 
 # ViewSets define the view behavior.
@@ -19,6 +20,19 @@ from ..serializers import (
 
 class UserInformationViewSet(UserDataModelViewSet):
     queryset = UserInformation.objects.none()
+    pagination_class = StandardResultsSetPagination
+    OrderingFilter = (
+        'first_name',
+        'last_name',
+        'last_login',
+        'is_staff',
+        'email',
+        'gender',
+        'timezone',
+        'language',
+        'created_at',
+        'update_at',
+    )
     model = UserInformation
 
     serializers = {
