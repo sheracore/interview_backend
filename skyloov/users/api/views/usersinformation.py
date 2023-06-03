@@ -1,9 +1,9 @@
-from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
+
 from skyloov.users.models import User, UserInformation
 from skyloov.utilities.permissions import AllowStaff, IsSuperUserAccessPermission
 from skyloov.utilities.api.views import UserDataModelViewSet
@@ -58,9 +58,19 @@ class UserInformationViewSet(UserDataModelViewSet):
         ],
     }
 
-    @action(methods=['get', 'put'], detail=False, permission_classes=[IsAuthenticated])
+    def perform_create(self, serializer, *args, **kwargs):
+        user = self.get_user_perform_create()
+        user_info_exists = self.model.objects.filter(user_id=user.pk).exists()
+        if user_info_exists:
+            raise ValidationError({
+                "User": ["User information with this user exists"]
+            })
+        kwargs['user_id'] = user.pk
+        super(UserDataModelViewSet, self).perform_create(serializer=serializer, **kwargs)
+
+    @action(methods=['get', 'put'], detail=False)
     def me(self, request):
-        user_info = request.user_info
+        user_info = self.get_queryset().get(user=request.user)
         if request.method in SAFE_METHODS:
             serializer = self.get_serializer(user_info, many=False, read_only=True, context={'request': request}).data
             return Response(serializer, status=status.HTTP_200_OK)
@@ -75,9 +85,12 @@ class UserInformationViewSet(UserDataModelViewSet):
         detail=True,
     )
     def change_staff(self, request, pk):
+        if 'is_staff' not in request.data:
+            raise ValidationError({
+                'is_staff': ["is required"]
+                }
+            )
         obj = self.get_object()
-        if request.provider.user == obj.user:
-            raise PermissionDenied
         obj.is_staff = request.data.get('is_staff', False)
         obj.save()
         serializer = self.get_serializer(obj, many=False, read_only=True, context={'request': request})

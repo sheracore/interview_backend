@@ -28,14 +28,16 @@ class AllowStaff(permissions.IsAuthenticated):
         if not (request.user and request.user.is_authenticated):
             return False
 
-        user_info = request.user_info
-        return user_info.is_staff
+        return request.user.is_staff
+        # user_info = request.user_info
+        # return user_info.is_staff
 
 
 class AllowStaffOrOwner(permissions.IsAuthenticated):
     def has_object_permission(self, request, view, obj):
         user = request.user
-        user_info = request.user_info
-        if obj.user_id == user.pk or user_info.is_staff:
+        # user_info = request.user_info
+        # if obj.user_id == user.pk or user_info.is_staff:
+        if obj.user_id == user.pk or user.is_staff:
             return True
         return False

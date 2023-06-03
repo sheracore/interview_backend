@@ -90,8 +90,9 @@ class DataModelViewSet(ModelViewSet):
         user = self.request.user
         if not user.is_authenticated:
             return False
-        user_info = self.request.user_info
-        return user_info.is_staff
+        return user.is_staff
+        # user_info = self.request.user_info
+        # return user_info.is_staff
 
     def get_queryset(self):
         if self.is_admin():

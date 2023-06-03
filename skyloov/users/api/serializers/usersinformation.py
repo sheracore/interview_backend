@@ -35,11 +35,13 @@ class UserInformationAdminSummarySerializer(UserInformationSummarySerializer):
             'is_staff',
             'language',
             'timezone',
+            'email',
         ]
 
         read_only_fields = UserInformationSummarySerializer.Meta.read_only_fields + [
             'last_login',
             'is_staff',
+            'email'
         ]
 
     def get_email(self, obj):
