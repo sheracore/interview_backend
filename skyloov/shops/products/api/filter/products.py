@@ -19,11 +19,11 @@ class ProductFilterSet(DataModelFilterSet):
             "example": "quantity_min:10, quantity_max:100",
         },
     )
-    price_fabric = filters.RangeFilter(
-        field_name='price_fabric',
+    price = filters.RangeFilter(
+        field_name='price',
         help_text={
             'description': 'Fabric price range .',
-            "example": "price_fabric_max:2500000, price_fabric_min:150000",
+            "example": "price_max:2500000, price_min:150000",
         },
     )
     brand = MultipleValueFilter(

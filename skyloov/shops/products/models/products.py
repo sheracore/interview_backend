@@ -49,7 +49,7 @@ class Product(DataModel):
         validators=[MinLengthValidator(3)],
         verbose_name=_('Title'),
     )
-    price_fabric = PriceField(
+    price = PriceField(
         big=True,
         verbose_name=_('Price Fabric'),
     )

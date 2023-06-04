@@ -6,14 +6,14 @@ from ..models import Product
 class ProductAdmin(DataModelAdmin):
     fields = [
         'title',
-        'price_fabric',
+        'price',
         'quantity',
         'brand',
         'category',
     ]
     list_display = [
         'title',
-        'price_fabric',
+        'price',
         'quantity',
         'brand',
         'category',
