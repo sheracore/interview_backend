@@ -75,7 +75,3 @@ class Product(DataModel):
     class Meta:
         verbose_name = _('Product')
         verbose_name_plural = _('Products')
-
-    @property
-    def price(self):
-        return round((self.price_fabric * self.quantity), 0)

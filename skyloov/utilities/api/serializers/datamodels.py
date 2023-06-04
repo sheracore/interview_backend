@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.contenttypes.models import ContentType
 
 from skyloov.utilities.db.models import DataModel
 
@@ -12,6 +13,7 @@ class DataModelSummarySerializer(serializers.ModelSerializer):
         model = DataModel
         fields = [
             'pk',
+            'i_content_type_id',
             'created_at',
             'update_at',
             'is_active',
@@ -19,10 +21,15 @@ class DataModelSummarySerializer(serializers.ModelSerializer):
 
         read_only_fields = [
             'pk',
+            'i_content_type_id',
             'created_at',
             'update_at',
             'is_active',
         ]
+
+    def get_i_content_type_id(self, obj):
+        # ContentType Manager will cache the data so don't worry about performance
+        return ContentType.objects.get_for_model(obj).pk
 
 
 class DataModelDetailSerializer(DataModelSummarySerializer):

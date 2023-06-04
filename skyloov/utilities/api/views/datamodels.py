@@ -7,6 +7,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import OrderingFilter
 
 from skyloov.utilities.permissions import AllowOwner, AllowStaff
+from skyloov.utilities.api.filters import FilterBackend
 
 from ..serializers import DataModelDetailSerializer
 
@@ -20,7 +21,7 @@ class DataModelViewSet(ModelViewSet):
         'default': DataModelDetailSerializer,
     }
     permission_classes_by_action = {}
-    filter_backends = [OrderingFilter]
+    filter_backends = [FilterBackend, OrderingFilter]
 
     def get_permissions(self):
         permissions = self.get_permission_classes_by_action()

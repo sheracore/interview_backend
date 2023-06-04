@@ -9,17 +9,19 @@ from skyloov.utilities.permissions import AllowStaff, IsSuperUserAccessPermissio
 from skyloov.utilities.api.views import UserDataModelViewSet
 from skyloov.utilities.api.paginations import StandardResultsSetPagination
 
-
 # ViewSets define the view behavior.
 from ..serializers import (
     UserInformationAdminSummarySerializer,
     UserInformationDetailSerializer,
     UserInformationSummarySerializer,
 )
+from ..filters import UserInformationFilterSet
 
 
 class UserInformationViewSet(UserDataModelViewSet):
     queryset = UserInformation.objects.none()
+    filterset_class = UserInformationFilterSet
+    model = UserInformation
     pagination_class = StandardResultsSetPagination
     OrderingFilter = (
         'first_name',
@@ -33,7 +35,6 @@ class UserInformationViewSet(UserDataModelViewSet):
         'created_at',
         'update_at',
     )
-    model = UserInformation
 
     serializers = {
         'default': UserInformationSummarySerializer,
