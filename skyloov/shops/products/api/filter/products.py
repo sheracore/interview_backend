@@ -19,6 +19,13 @@ class ProductFilterSet(DataModelFilterSet):
             "example": "quantity_min:10, quantity_max:100",
         },
     )
+    rating = filters.RangeFilter(
+        field_name='rating',
+        help_text={
+            'description': 'Rating range .',
+            "example": "rating_min:1, rating_max:5",
+        },
+    )
     price = filters.RangeFilter(
         field_name='price',
         help_text={

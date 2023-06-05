@@ -1,4 +1,3 @@
-from django.core.validators import MinLengthValidator
 from django.db import models
 from skyloov.utilities.db.models import (
     DataModel,
@@ -7,6 +6,11 @@ from skyloov.utilities.db.models import (
 )
 
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import (
+    MinLengthValidator,
+    MinValueValidator,
+    MaxValueValidator
+)
 
 from skyloov.shops.fields import PriceField
 
@@ -68,6 +72,12 @@ class Product(DataModel):
         blank=False,
         choices=Category.choices,
         verbose_name=_('Category'),
+    )
+    # New field with minimum and maximum values for number 4 SKYLOOV requirement
+    rating = models.FloatField(
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(1.0), MaxValueValidator(5.0)]
     )
 
     objects = ProductManager()

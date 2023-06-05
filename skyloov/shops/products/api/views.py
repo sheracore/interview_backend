@@ -67,6 +67,8 @@ class ProductViewSet(DataModelViewSet):
             'price__lte': data.get('max_price'),
             'quantity__gte': data.get('min_quantity'),
             'quantity__lte': data.get('max_quantity'),
+            'rating__gte': data.get('min_rating'),
+            'rating__lte': data.get('max_rating'),
             'created_at__gte': parse_datetime(data.get('created_at_after')) if data.get('created_at_after') else None,
             'created_at__lte': parse_datetime(data.get('created_at_before')) if data.get('created_at_before') else None
         }

@@ -23,11 +23,14 @@ class ProductSummarySerializer(DataModelSummarySerializer):
                 'quantity',
                 'brand',
                 'category',
+                'rating',
             ]
         )
 
         read_only_fields = (
-            DataModelSummarySerializer.Meta.fields + []
+            DataModelSummarySerializer.Meta.fields + [
+                'rating',
+        ]
         )
 
 
@@ -52,6 +55,8 @@ class ProductFilterSerializer(serializers.Serializer):
     brand = serializers.CharField(allow_blank=True, required=False)
     min_price = serializers.DecimalField(max_digits=20, decimal_places=0, required=False)
     max_price = serializers.DecimalField(max_digits=20, decimal_places=0, required=False)
+    min_rating = serializers.FloatField(required=False)
+    max_rating = serializers.FloatField(required=False)
     min_quantity = serializers.IntegerField(min_value=0, required=False)
     max_quantity = serializers.IntegerField(min_value=0, required=False)
     created_at_after = serializers.DateTimeField(required=False)
@@ -81,6 +86,11 @@ class ProductFilterSerializer(serializers.Serializer):
             attrs.get('min_quantity'),
             attrs.get('max_quantity'),
             _("Min quantity must be less than or equal to max quantity.")
+        )
+        _validate_range(
+            attrs.get('min_rating'),
+            attrs.get('max_rating'),
+            _("Min rating must be less than or equal to max rating.")
         )
         _validate_range(
             attrs.get('created_at_after'),
