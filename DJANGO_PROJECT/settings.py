@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+import random
 import datetime
 from dotenv import load_dotenv
 from skyloov.install import get_skyloov_app_list_install, get_skyloov_middleware_list
@@ -167,6 +168,14 @@ JWT_AUTH = {
     'JWT_AUTH_COOKIE': None,
 
 }
+
+REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
+REDIS_PORT = os.environ.get('REDIS_PORT', 6379)
+
+# CELERY
+CELERY_ID = os.environ.get('CELERY_ID', round(random.random() * 16))
+CELERY_BROKER_URL = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, CELERY_ID)
+CELERY_RESULT_BACKEND = 'redis://{}:{}/{}'.format(REDIS_HOST, REDIS_PORT, CELERY_ID)
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
