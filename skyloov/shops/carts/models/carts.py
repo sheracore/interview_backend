@@ -13,7 +13,7 @@ class CartQuerySet(UserDataModelQuerySet):
 
 class CartManager(UserDataModelManager):
     def get_queryset(self):
-        return CartQuerySet(self.model, using=self._db)
+        return CartQuerySet(self.model, using=self._db).prefetch_related('items')
 
 
 class Cart(UserDataModel):

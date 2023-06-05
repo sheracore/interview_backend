@@ -13,6 +13,7 @@ class DataModelSummarySerializer(serializers.ModelSerializer):
         model = DataModel
         fields = [
             'pk',
+            'resourcetype',
             'i_content_type_id',
             'created_at',
             'update_at',
@@ -21,6 +22,7 @@ class DataModelSummarySerializer(serializers.ModelSerializer):
 
         read_only_fields = [
             'pk',
+            'resourcetype',
             'i_content_type_id',
             'created_at',
             'update_at',

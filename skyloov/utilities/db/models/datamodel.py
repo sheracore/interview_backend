@@ -47,6 +47,10 @@ class DataModel(models.Model):
     def record_is_adding(self):
         return self._state.adding
 
+    @property
+    def resourcetype(self):
+        return self._meta.object_name
+
 
 """
 User Data Model

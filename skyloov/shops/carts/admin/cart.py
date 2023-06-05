@@ -3,7 +3,7 @@ from skyloov.utilities.admin import UserDataModelAdmin
 from ..models import Cart, CartItem
 
 
-class OrderItemInline(admin.TabularInline):
+class CartItemInline(admin.TabularInline):
     model = CartItem
     ct_field = "content_type"
     ct_fk_field = "object_id"
@@ -42,7 +42,7 @@ class CartAdmin(UserDataModelAdmin):
     ]
     allowed_actions = []
     inlines = [
-        OrderItemInline
+        CartItemInline
     ]
 
     def __init__(self, *args, **kwargs):
