@@ -11,31 +11,25 @@ from django.core.validators import (
     MinValueValidator,
     MaxValueValidator
 )
-
+from skyloov.utilities.db.fields import FileField
+from skyloov.core.files.models import FileType
 from skyloov.shops.fields import PriceField
 
 
 class Brand(models.TextChoices):
-    LENNAR = 'lennar', _('Lennar')
-    DR_HORTON = 'dr_horton', _('DR Horton')
-    PULTE_HOEMS = 'pulte_homes', _('Pulte Homes')
-    TOLL_BROTHERS = 'toll_brothers', _('Toll Brothers')
-    KB_HOME = 'kb_home', _('KB Home')
+    APPLE = 'apple', _('Apple')
+    SAMSUNG = 'samsung', _('Samsung')
+    ASUS = 'asus', _('Asus')
+    MICROSOFT = 'microsoft', _('Microsoft')
+    GOOGLE = 'google', _('Google')
 
 
 class Category(models.TextChoices):
-    SINGLE_FAMILY = 'single_family', _('Single_family')
-    CONDOMINIUMS = 'condominiums', _('Condominiums')
-    TOWNHOUSES = 'townhouses', _('Townhouses')
-    DUPLEXES = 'duplexes', _('Duplexes')
-    APARTMENTS = 'apartments', _('Apartments')
-    VILLAS = 'villas', _('Villas')
-    BUNGALOWS = 'bungalows', _('Bungalows')
-    MANSIONS = 'mansions', _('Mansions')
-    TINY = 'tiny', _('Tiny')
-    HOUSES = 'houses', _('Houses')
-    MOBILE = 'mobile', _('Mobile')
-    HOMES = 'homes', _('Homes')
+    SMARTPHONE = 'smartphone', _('Smartphone')
+    LAPTOP = 'laptop', _('Laptop')
+    SMARTWATCH = 'smartwatch', _('Smartwatch')
+    TABLET = 'tablet', _('Tablet')
+    SMART_SPEAKER = 'smart_speaker', _('Smart Speaker')
 
 
 class ProductQuerySet(DataModelQuerySet):
@@ -55,11 +49,11 @@ class Product(DataModel):
     )
     price = PriceField(
         big=True,
-        verbose_name=_('Price Fabric'),
+        verbose_name=_('Price'),
     )
     quantity = models.PositiveIntegerField(
         default=1,
-        verbose_name=_('Discount Price'),
+        verbose_name=_('quantity'),
     )
     brand = models.CharField(
         max_length=100,
@@ -73,11 +67,25 @@ class Product(DataModel):
         choices=Category.choices,
         verbose_name=_('Category'),
     )
-    # New field with minimum and maximum values for number 4 SKYLOOV requirement
+    # New field with minimum and maximum values for SKYLOOV requirement number 4
     rating = models.FloatField(
         null=True,
         blank=True,
         validators=[MinValueValidator(1.0), MaxValueValidator(5.0)]
+    )
+    image_thumbnail = FileField(
+        on_delete=models.CASCADE,
+        related_name='product_image_thumbnail',
+        null=True,
+        blank=True,
+        allow_type=[FileType.IMAGE],
+        verbose_name=_('Image Thumbnail'),
+    )
+    image_original = FileField(
+        on_delete=models.CASCADE,
+        related_name='product_image_original',
+        allow_type=[FileType.IMAGE],
+        verbose_name=_('Image Original'),
     )
 
     objects = ProductManager()

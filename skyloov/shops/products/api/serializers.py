@@ -24,6 +24,8 @@ class ProductSummarySerializer(DataModelSummarySerializer):
                 'brand',
                 'category',
                 'rating',
+                'image_thumbnail',
+                'image_original'
             ]
         )
 

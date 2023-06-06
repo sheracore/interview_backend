@@ -10,6 +10,8 @@ class ProductAdmin(DataModelAdmin):
         'quantity',
         'brand',
         'category',
+        'image_thumbnail',
+        'image_original',
     ]
     list_display = [
         'title',
@@ -28,7 +30,10 @@ class ProductAdmin(DataModelAdmin):
         'category'
     ]
     exclude = []
-    raw_id_fields = []
+    raw_id_fields = [
+        'image_thumbnail',
+        'image_original',
+    ]
     readonly_fields = []
     allowed_actions = []
     inlines = []
