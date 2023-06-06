@@ -11,6 +11,7 @@ from django.db.models.signals import post_save
 from django.utils.translation import gettext_lazy as _
 
 from skyloov.utilities.db.models import DataModel
+from ..enums import Email
 
 from ..tasks import post_registeration_email
 
@@ -83,9 +84,10 @@ class User(AbstractBaseUser, PermissionsMixin, DataModel):
 
 def post_save_user_model_receiver(sender, instance, created, *args, **kwargs):
     if created:
-        message = "msg"
+        subject = Email.SUBJECT.get_value
+        message = Email.BODY.get_value
         instance.info()
-        post_registeration_email.apply_async(args=(message,), countdown=5) # TODO: should convert to 24 * 60 * 60
+        post_registeration_email.apply_async(args=(instance.email, subject, message,), countdown=24 * 60 * 60)
 
 
 post_save.connect(post_save_user_model_receiver, sender=User)
