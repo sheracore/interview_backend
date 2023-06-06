@@ -16,7 +16,10 @@ import datetime
 from dotenv import load_dotenv
 from skyloov.install import get_skyloov_app_list_install, get_skyloov_middleware_list
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FILE_ACCESS_PATH = os.path.join(os.path.dirname(BASE_DIR), 'file_access')
+
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
@@ -200,7 +203,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+# CDN
+CDN_URL = os.environ.get('CDN_URL', '')
+
+MEDIA_ROOT = os.path.join(FILE_ACCESS_PATH, "media")
+MEDIA_URL = "%s/%s/" % (CDN_URL, 'media')
+
+STATIC_ROOT = os.path.join(FILE_ACCESS_PATH, 'staticfiles')
+STATIC_URL = "%s/%s/" % (CDN_URL, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
