@@ -1,8 +1,10 @@
 from django.db import models
+from django.db.models.signals import post_save
+
 from skyloov.utilities.db.models import (
-    DataModel,
-    DataModelManager,
-    DataModelQuerySet
+    UserDataModel,
+    UserDataModelManager,
+    UserDataModelQuerySet
 )
 
 from django.utils.translation import gettext_lazy as _
@@ -32,16 +34,16 @@ class Category(models.TextChoices):
     SMART_SPEAKER = 'smart_speaker', _('Smart Speaker')
 
 
-class ProductQuerySet(DataModelQuerySet):
+class ProductQuerySet(UserDataModelQuerySet):
     pass
 
 
-class ProductManager(DataModelManager):
+class ProductManager(UserDataModelManager):
     def get_queryset(self):
         return ProductQuerySet(self.model, using=self._db)
 
 
-class Product(DataModel):
+class Product(UserDataModel):
     title = models.CharField(
         max_length=100,
         validators=[MinLengthValidator(3)],
@@ -74,7 +76,7 @@ class Product(DataModel):
         validators=[MinValueValidator(1.0), MaxValueValidator(5.0)]
     )
     image_thumbnail = FileField(
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='product_image_thumbnail',
         null=True,
         blank=True,
@@ -82,8 +84,10 @@ class Product(DataModel):
         verbose_name=_('Image Thumbnail'),
     )
     image_original = FileField(
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='product_image_original',
+        null=True,
+        blank=True,
         allow_type=[FileType.IMAGE],
         verbose_name=_('Image Original'),
     )
@@ -93,3 +97,13 @@ class Product(DataModel):
     class Meta:
         verbose_name = _('Product')
         verbose_name_plural = _('Products')
+
+
+def post_save_product_receiver(sender, instance, created, *args, **kwargs):
+    from ..tasks import product_thumbnail_generator
+
+    if instance.image_original and not instance.image_thumbnail:
+        product_thumbnail_generator(instance.pk, instance.user.pk) #TODO: should add .delay
+
+
+post_save.connect(post_save_product_receiver, sender=Product)

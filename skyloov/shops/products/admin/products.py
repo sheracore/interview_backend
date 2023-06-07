@@ -1,9 +1,9 @@
 from django.contrib import admin
-from skyloov.utilities.admin import DataModelAdmin
+from skyloov.utilities.admin import UserDataModelAdmin
 from ..models import Product
 
 
-class ProductAdmin(DataModelAdmin):
+class ProductAdmin(UserDataModelAdmin):
     fields = [
         'title',
         'price',
@@ -40,7 +40,7 @@ class ProductAdmin(DataModelAdmin):
 
     def __init__(self, *args, **kwargs):
         Klass = ProductAdmin
-        Klass_parent = DataModelAdmin
+        Klass_parent = UserDataModelAdmin
 
         super(Klass, self).__init__(*args, **kwargs)
 

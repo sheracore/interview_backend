@@ -2,11 +2,11 @@ from django_filters import rest_framework as filters
 
 from skyloov.utilities.api.filters import (
     MultipleValueFilter,
-    DataModelFilterSet,
+    UserDataModelFilterSet,
 )
 
 
-class ProductFilterSet(DataModelFilterSet):
+class ProductFilterSet(UserDataModelFilterSet):
     title = filters.CharFilter(
         field_name='title',
         lookup_expr='icontains',

@@ -2,8 +2,10 @@ from django.utils.dateparse import parse_datetime
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
+from rest_framework import status
+from rest_framework.response import Response
 
-from skyloov.utilities.api.views import DataModelViewSet
+from skyloov.utilities.api.views import UserDataModelViewSet
 from skyloov.utilities.api.paginations import StandardResultsSetPagination
 from skyloov.utilities.permissions import AllowStaff
 
@@ -11,12 +13,14 @@ from ..models import Product
 from ..api.serializers import (
     ProductSummarySerializer,
     ProductDetailSerializer,
+    ProductImageUploadSerializer,
     ProductFilterSerializer,
 )
 from .filter import ProductFilterSet
+from ..utils import upload_image
 
 
-class ProductViewSet(DataModelViewSet):
+class ProductViewSet(UserDataModelViewSet):
     queryset = Product.objects.none()
     model = Product
     filterset_class = ProductFilterSet
@@ -37,6 +41,7 @@ class ProductViewSet(DataModelViewSet):
         'create': ProductDetailSerializer,
         'update': ProductDetailSerializer,
         'search': ProductFilterSerializer,
+        'update_image': ProductImageUploadSerializer,
     }
     permission_classes_by_action = {
         'default': [AllowStaff],
@@ -51,6 +56,9 @@ class ProductViewSet(DataModelViewSet):
         'update': [
             AllowStaff,
         ],
+        'update_image': [
+            AllowStaff
+        ]
     }
 
     @action(methods=['POST'], detail=False)
@@ -77,3 +85,20 @@ class ProductViewSet(DataModelViewSet):
         paginated_queryset = self.paginate_queryset(queryset)
         serializer = ProductSummarySerializer(paginated_queryset, context={'request': request}, many=True)
         return self.get_paginated_response(serializer.data)
+
+    @action(methods=['POST'], detail=True)
+    def update_image(self, request, pk):
+        user_obj = request.user
+        product_obj = self.get_object()
+        data = request.data
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+
+        image = request.FILES['image']
+        upload_image(image, product_obj, user_obj)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=['POST'], detail=True)
+    def rate(self, request, pk):
+        # TODO: Implement rating Here, rate products by users and calculate average if product rating
+        return Response({}, status=status.HTTP_200_OK)

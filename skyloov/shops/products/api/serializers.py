@@ -2,7 +2,8 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from skyloov.utilities.api.serializers import DataModelDetailSerializer, DataModelSummarySerializer
+from skyloov.utilities.api.serializers import UserDataModelDetailSerializer, UserDataModelSummarySerializer
+from ..enums import ProductImageSize
 
 from ..models import Product
 
@@ -12,11 +13,11 @@ def _validate_range(min_value, max_value, error_message):
         raise ValidationError(error_message)
 
 
-class ProductSummarySerializer(DataModelSummarySerializer):
+class ProductSummarySerializer(UserDataModelSummarySerializer):
     class Meta:
         model = Product
         fields = (
-            DataModelSummarySerializer.Meta.fields
+            UserDataModelSummarySerializer.Meta.fields
             + [
                 'title',
                 'price',
@@ -30,28 +31,50 @@ class ProductSummarySerializer(DataModelSummarySerializer):
         )
 
         read_only_fields = (
-            DataModelSummarySerializer.Meta.fields + [
+            UserDataModelSummarySerializer.Meta.fields + [
                 'rating',
         ]
         )
 
 
-class ProductDetailSerializer(ProductSummarySerializer, DataModelDetailSerializer):
+class ProductDetailSerializer(ProductSummarySerializer, UserDataModelDetailSerializer):
     class Meta:
         model = Product
         fields = (
-            DataModelDetailSerializer.Meta.fields
+            UserDataModelDetailSerializer.Meta.fields
             + ProductSummarySerializer.Meta.fields
             + []
         )
 
         read_only_fields = (
-            DataModelDetailSerializer.Meta.read_only_fields
+            UserDataModelDetailSerializer.Meta.read_only_fields
             + ProductSummarySerializer.Meta.read_only_fields
             + []
         )
 
 
+class ProductImageUploadSerializer(serializers.Serializer):
+    image = serializers.ImageField(required=True, write_only=True)
+
+    class Meta:
+        model = Product
+        fields = [
+                'image'
+            ]
+
+        read_only_fields = []
+
+    def validate_image(self, image):
+        max_allow_upload_size = ProductImageSize.SMALL.get_size
+        file_size = image.size
+        size_error = _('Size %(size)s doesnt support.') % {
+            'size': file_size,
+        }
+        if file_size > max_allow_upload_size:
+            raise ValidationError([size_error])
+
+
+#TODO: just for skyloov requirement
 class ProductFilterSerializer(serializers.Serializer):
     category = serializers.CharField(allow_blank=True, required=False)
     brand = serializers.CharField(allow_blank=True, required=False)
