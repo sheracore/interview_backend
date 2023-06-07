@@ -95,6 +95,7 @@ class Product(UserDataModel):
     objects = ProductManager()
 
     class Meta:
+        ordering = ['-id']
         verbose_name = _('Product')
         verbose_name_plural = _('Products')
 

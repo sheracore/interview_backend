@@ -1,1 +1,5 @@
-from .products import Product  # noqa: F401
+from .products import (  # noqa: F401
+    Product,
+    Brand,
+    Category
+)
