@@ -14,7 +14,8 @@ sudo mysql
 ```
 CREATE DATABASE <db_name>;
 CREATE USER '<username>'@'localhost' IDENTIFIED WITH mysql_native_password BY '<password>';
-GRANT ALL ON blog_data.* TO 'djangouser'@'localhost';
+GRANT CREATE ON *.* TO 'djangouser'@'localhost';
+GRANT ALL ON *.* TO 'djangouser'@'localhost';
 FLUSH PRIVILEGES; #
 ```
 #### Install mysql connector
