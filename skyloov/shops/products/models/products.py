@@ -104,7 +104,7 @@ def post_save_product_receiver(sender, instance, created, *args, **kwargs):
     from ..tasks import product_thumbnail_generator
 
     if instance.image_original and not instance.image_thumbnail:
-        product_thumbnail_generator(instance.pk, instance.user.pk) #TODO: should add .delay
+        product_thumbnail_generator.delay(instance.pk, instance.user.pk) #TODO: should add .delay
 
 
 post_save.connect(post_save_product_receiver, sender=Product)

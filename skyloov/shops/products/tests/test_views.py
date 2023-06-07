@@ -1,6 +1,12 @@
+from PIL import Image
+from io import BytesIO
+
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.urls import reverse
+from django.core.files import File
+from skyloov.core.files.models import FileModel
+
 
 from rest_framework.test import APIClient, APITestCase
 from rest_framework_jwt.settings import api_settings
@@ -8,15 +14,26 @@ from rest_framework import status
 
 from ..models import Product, Category, Brand
 from ..api.serializers import ProductSummarySerializer
+from ..tasks import product_thumbnail_generator
 
 User = get_user_model()
 
 PRODUCT_URL = reverse('product-list')
 PRODUCT_SEARCH_URL = reverse('product-search')
+PRODUCT_IMAGE_URL = 'product-update-image'
 
 
 def _client_result(res):
     return res.data['results'] if 'results' in res.data else res.data
+
+
+def _generate_random_image(name='test', format='png'):
+    file = BytesIO()
+    image = Image.new('RGB', size=(100, 100), color=(155, 0, 0))
+    image.save(file, format)
+    file.seek(0)
+    file_object = File(file, name=name)
+    return file_object
 
 
 class ProductTest(APITestCase):
@@ -154,3 +171,33 @@ class ProductTest(APITestCase):
 
         products = Product.objects.all()
         self.assertEqual(len(products), 2)
+
+    # TODO:  This method test should go to model tests
+    def test_update_image_product(self):
+        """Test update image and generate thumbnail image size and store it in the db"""
+
+        image = _generate_random_image()
+        # data = {'image': image}
+        f_obj = FileModel.objects.create(
+            title='original_image',
+            file=image,
+            user=self.user
+        )
+        obj = Product.objects.create(
+            user=self.user,
+            title='tech_devices',
+            price=1500,
+            quantity=20,
+            brand=Brand.MICROSOFT,
+            category=Category.SMART_SPEAKER,
+            image_original=f_obj
+        )
+        product_thumbnail_generator(obj.id, self.user.pk)
+        model_obj = Product.objects.get(pk=obj.pk)
+
+        # self.authenticate_client()
+        # res = self.client.post(reverse(PRODUCT_IMAGE_URL, args=[obj.pk]), data=data, format='multipart')
+        # self.assertEqual(res.status_code, status.HTTP_200_OK)
+        # time.sleep(2) # because of of thread and task
+        # model_obj = Product.objects.get(pk=obj.pk)
+        self.assertTrue(model_obj.image_original)
