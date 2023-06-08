@@ -21,13 +21,16 @@ FLUSH PRIVILEGES; #
 #### Install mysql connector
 ```
 sudo apt install libmysqlclient-dev default-libmysqlclient-dev
-pip install wheel (Installing Python programs from wheel packages is generally faster and more resource-efficient than building packages from their source code)
-pip install mysqlclient
 ```
 
 #### Install ffmpeg
 ```commandline
 sudo apt install ffmpeg
+```
+
+#### install packages
+```commandline
+pip install -r requiremets.txt
 ```
 
 #### Migrate

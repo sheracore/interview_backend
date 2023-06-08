@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  django:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=DJANGO_PROJECT.settings
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+      - celery
+
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+#    env_file:
+#      - ./.env
+    environment:
+      MYSQL_DATABASAE: ${DATABASE_NAME}
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+    volumes:
+      - ./data/mysql/db:/var/lib/mysql
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A DJANGO_PROJECT worker -l info
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env

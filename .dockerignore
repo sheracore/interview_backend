@@ -1,0 +1,27 @@
+# GIT
+.git
+.gitignore
+
+# DOCKER
+.docker
+
+
+# PTTHON
+DJANGO_PROJECT/__pycache__/
+DJANGO_PROJECT/*/__pycache__/
+DJANGO_PROJECT/*/*/__pycache__/
+DJANGO_PROJECT/*/*/*/__pycache__/
+
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# LOCAL DATA
+data/
+app/
