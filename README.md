@@ -37,4 +37,4 @@ pip install -r requiremets.txt
 ```
 python manage.py migrate
 ```
-
+Now you can run project
