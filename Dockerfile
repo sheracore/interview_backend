@@ -11,32 +11,17 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install project dependencies
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy the project files to the working directory
 COPY . .
 
-
-# Set up MySQL server
-RUN apt-get update
-RUN apt install -y mariadb-server && apt install -y mariadb-client
-
-# Set up MySQL client
-RUN apt-get update
-RUN apt-get install -y default-mysql-client
-RUN apt install -y default-libmysqlclient-dev
-
-
-# Install Redis server
-RUN apt-get update
-RUN apt-get install -y redis-server
-
 # Install ffmpeg
-RUN apt-get update
-RUN apt install -y ffmpeg
+# RUN apt-get update
+# RUN apt install -y ffmpeg
 
 # Expose ports
-EXPOSE 8000 6379 3306
+EXPOSE 8000
 
 # Set up entrypoint script
 COPY ./entrypoint.sh /entrypoint.sh
