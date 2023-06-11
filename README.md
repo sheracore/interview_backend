@@ -1,6 +1,6 @@
 # This project prepared for SKYLOOV Interview
 
-# Installation
+# Installation Without Docker
 ## Database
 ### Install mysql
 #### Ubuntu 22.04
@@ -37,4 +37,14 @@ pip install -r requiremets.txt
 ```
 python manage.py migrate
 ```
-Now you can run project
+
+# Installation With Docker
+
+## Build docker
+```
+sudo docker-compose up --build -d
+```
+## Create superuser to connecting with django admin panel and swagger
+```commandline
+python manage.py createsuperuser
+```
