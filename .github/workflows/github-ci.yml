@@ -14,7 +14,8 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: [3.9]
-
+    env:
+      MY_ENV_VAR: .env
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
