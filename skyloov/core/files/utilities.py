@@ -102,7 +102,7 @@ def detect_by_readable_description(readable_description):
 def detect_mime_type(mime):
     from .models import FileType
 
-    mime = mime.lower()
+    mime = mime.lower() if mime else mime
     types_map = {
         FileType.IMAGE: [
             'image/png',

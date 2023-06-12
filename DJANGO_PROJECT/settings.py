@@ -18,7 +18,7 @@ from skyloov.install import get_skyloov_app_list_install, get_skyloov_middleware
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FILE_ACCESS_PATH = os.path.join(os.path.dirname(BASE_DIR), 'file_access')
+FILE_ACCESS_PATH = os.path.join(BASE_DIR, 'file_access')
 
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 

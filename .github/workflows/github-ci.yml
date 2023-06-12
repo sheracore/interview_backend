@@ -40,6 +40,9 @@ jobs:
 #        registry: docker.io
 #        username: ${{ secrets.DOCKER_USERNAME }}
 #        password: ${{ secrets.DOCKER_PASSWORD }}
+    
+    - name: Run Docker-Compose
+      run: docker-compose up -d
 
     - name: Build and Push Docker-Compose Image
       run: |
