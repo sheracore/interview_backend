@@ -37,8 +37,6 @@ jobs:
       uses: mr-smithers-excellent/docker-build-push@v6
       with:
         image: sheracore/interview_backend
-        tags: v1, latest
-        registry: registry-url.io
-        dockerfile: Dockerfile.ci
+        registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
