@@ -23,6 +23,7 @@ services:
 
   django:
     build: .
+#    image: sheracore/interview_backend
     ports:
       - "8000:8000"
     environment:
@@ -48,10 +49,10 @@ services:
       - SYS_NICE
     restart: always
     environment:
-      - MYSQL_DATABASE=${DATABASE_NAME}
-      - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
-      - MYSQL_USER=${DATABASE_USER}
-      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_DATABASE_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_DATABASE_USER}
+      - MYSQL_PASSWORD=${MYSQL_DATABASE_PASSWORD}
     ports:
       - '3306:3306'
     volumes:
