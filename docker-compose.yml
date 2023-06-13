@@ -23,7 +23,7 @@ services:
 
   django:
     build: .
-#    image: sheracore/interview_backend
+    image: sheracore/interview_backend:latest
     ports:
       - "8000:8000"
     environment:
