@@ -22,10 +22,3 @@ COPY . .
 
 # Expose ports
 EXPOSE 8000
-
-# # Set up entrypoint script
-# COPY ./entrypoint.sh /entrypoint.sh
-# RUN chmod +x /entrypoint.sh
-#
-# # Run the entrypoint script
-# ENTRYPOINT ["/entrypoint.sh"]

@@ -15,13 +15,14 @@ jobs:
       matrix:
         python-version: [3.9]
     env:
-#      MY_ENV_VAR: .env
       MYSQL_DATABASE_HOST: ${{ secrets.MYSQL_DATABASE_HOST }}
       MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
       MYSQL_DATABASE_ROOT_PASSWORD: ${{ secrets.MYSQL_DATABASE_ROOT_PASSWORD }}
       MYSQL_DATABASE_USER: ${{ secrets.MYSQL_DATABASE_USER }}
       MYSQL_DATABASE_PASSWORD: ${{ secrets.MYSQL_DATABASE_PASSWORD }}
       MYSQL_DATABASE_PORT: ${{ secrets.MYSQL_DATABASE_PORT }}
+      REDIS_HOST: ${{ secrets.REDIS_HOST }}
+      REDIS_PORT: ${{ secrets.REDIS_PORT }}
       CELERY_ID: ${{ secrets.CELERY_ID }}
       EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
       EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
