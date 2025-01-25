@@ -17,7 +17,7 @@ class CartManager(UserDataModelManager):
 
 
 class Cart(UserDataModel):
-    title = models.CharField(blank=True, max_length=25, verbose_name=_('Title'))
+    title = models.CharField(blank=True, max_length=25, unique=Ture, verbose_name=_('Title'))
 
     objects = CartManager()
 
